@@ -1,7 +1,8 @@
 import pytest
 import numpy as np
-from read_mars_data import parse_header, parse_body, parse_number
+from read_mars_data import parse_header, parse_body, parse_number, read_ascii_data
 from datetime import datetime
+from pathlib import Path
 
 cases = [["12", 12], ["12.0008", 12.0008], ["----", None], ["1e78", 1e78]]
 
@@ -151,3 +152,14 @@ def test_parse_header():
     assert resp["variable"] == "Water vapor column (kg/m2)"
     assert resp["keys"] == "North latitude (degrees)"
     assert resp["retrieval_date"] == datetime(2021, 8, 14, 16, 27, 39, 703997)
+
+
+def test_parse_file():
+    sections = read_ascii_data(Path("data.txt"))
+    assert list(sections.keys()) == [
+        "Water vapor column (kg/m2)",
+        "Temperature (K)",
+        "Pressure (Pa)",
+    ]
+    for k, v in sections.items():
+        assert len(v["data"].data) == 64

@@ -79,24 +79,26 @@ def read_ascii_data(dataf):
                 break
             while "#" * 8 not in row:  # start header section
                 row = f.readline()
+            row = f.readline()  # skip ###### row
             header = []
-            for row in f.read():  # starts at line after last read
-                if "#" * 8 in row:  # start header section
-                    break
+            while "#" * 8 not in row:
                 header.append(row)
+                row = f.readline()
             header = parse_header(header)
 
             # parse body
             body = []
             row = f.readline()
-            while "#" * 8 not in row:  # start header section
+            while row and "#" * 8 not in row:  # start header section
                 body.append(row)
                 row = f.readline()
             body = parse_body(body)
-
-            sections[header["keys"]] = body
+            header["data"] = body
+            sections[header["variable"]] = header
     return sections
 
 
-# inf = Path("~/Downloads/data.txt").expanduser()
-# read_ascii_data(inf)
+if __name__ == "__main__":
+    inf = Path("~/Downloads/data.txt").expanduser()
+    d = read_ascii_data(inf)
+    debug(d.keys())
