@@ -141,7 +141,7 @@ def test_parse_header():
 ### Mars Climate Database (c) LMD/OU/IAA/ESA/CNES
 ##########################################################################################"""
     data = data.split("\n")
-    resp = parse_header(data)
+    resp = parse_header(data[1:])
     assert resp["mcd_version"] == "v5.3"
     assert resp["model"] == "climatology average solar scenario"
     assert resp["ls"] == "85.3deg"
