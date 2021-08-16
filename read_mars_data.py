@@ -1,7 +1,6 @@
 import csv
 import pytest
 from pathlib import Path
-from devtools import debug
 from typing import List, Union
 from datetime import datetime
 from collections import namedtuple
@@ -99,6 +98,6 @@ def read_ascii_data(dataf):
 
 
 if __name__ == "__main__":
-    inf = Path("~/Downloads/data.txt").expanduser()
+    inf = Path("data.txt")
     d = read_ascii_data(inf)
-    debug(d.keys())
+    print(d.keys())
